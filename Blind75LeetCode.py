@@ -354,13 +354,42 @@ def search_in_rotated_sorted_array(nums: list[int], target: int) -> int:
 
 
 def combination_sum(candidates: list[int], target: int) -> list[list[int]]:
+    candidates.sort()
+    answers = []
+
+    def find_sums(index: int, current: list, total: int):  # A recursive function to find potential sums
+        if index >= len(candidates):
+            return
+
+        find_sums(index + 1, current.copy(), total)
+
+        candidate = candidates[index]  # the number from candidates currently being checked
+        if total + candidate <= target:
+            current.append(candidate)
+            total += candidate
+            if total == target and current not in answers:
+                answers.append(current)
+                return
+            find_sums(index, current.copy(), total)
+
+        else:
+            # find_sums(index + 1, current.copy(), total)
+            return
+
+    for i in range(len(candidates)):
+        find_sums(i, [], 0)
+    return answers
+
+
+def rotate_image(matrix: list[list[int]]) -> None:
     pass
 
 
 
 
 
-print(search_in_rotated_sorted_array(nums = [4,5,6,7,0,1,2], target = 2))
+print(combination_sum([2,22,4,17,28,13,39,27,24,37,12,30,5,23,29,8,16,34,15,36,14,10,31], 30))
+
 # for i in range(7):
 #     print(f"target = {i}")
 #     print(search_in_rotated_sorted_array(nums = [4,5,6,7,0,1,2], target = i))
